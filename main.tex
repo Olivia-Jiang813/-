@@ -1,0 +1,352 @@
+\documentclass[a4paper,12pt]{book}
+\usepackage{xeCJK}       % 中文字体支持
+\usepackage{graphicx}    % 插入图片
+\usepackage{chngcntr}
+\usepackage{tabularx}    % 表格支持
+\usepackage{hyperref}    % 超链接支持
+\usepackage[normalem]{ulem} % 下划线支持，但保持斜体正常
+\usepackage{setspace}    % 行间距
+\usepackage{geometry}    % 页面布局
+\usepackage{titlesec}    % 自定义标题样式
+\usepackage{tocloft}     % 自定义目录样式
+\usepackage{fancyhdr}    % 页眉页脚设置
+\usepackage{caption}     % 自定义表格/图片标题
+\usepackage{indentfirst} % 首行缩进
+\usepackage[natbibapa]{apacite} % 启用 APA 引用样式
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{placeins}
+\usepackage{booktabs}
+\bibliographystyle{apacite}
+\geometry{left=2.5cm, right=2.5cm, top=3cm, bottom=3cm}
+\usepackage{xcolor}      % 支持颜色
+\usepackage{tabularx}    % 支持自适应宽度表格
+\usepackage{booktabs}    % 提供更好的表格线条样式
+\usepackage{colortbl}    % 支持单元格背景颜色
+\usepackage{caption}     % 自定义表格标题
+\usepackage{subfig}
+\usepackage{tikz}
+\usepackage{multirow}
+\usetikzlibrary{arrows.meta, positioning}
+\usepackage{afterpage}  % 确保可以使用 \afterpage{}
+\usepackage{longtable}  % 支持跨页表格
+\usepackage{array}       % 允许更灵活的列格式
+\usepackage{booktabs}    % 更好的表格线
+\usepackage{threeparttable}
+\usepackage{makecell}
+
+% 修改 \chaptermark 格式，使页眉中只显示章节标题
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+% 定义页眉样式
+\fancypagestyle{main}{
+    \fancyhf{} % 清空默认设置
+    \fancyhead[L]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} 浙江大学博士学位论文} % 页眉左侧
+    \fancyhead[R]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} \leftmark} % 页眉右侧只显示章节标题
+    \fancyfoot[C]{\thepage} % 页脚中间显示页码
+    \renewcommand{\headrulewidth}{0.5pt} % 页眉下划线
+    \renewcommand{\footrulewidth}{0pt}   % 禁止页脚线
+}
+
+% 在导言区 fancyhdr 设置之后添加:
+\fancypagestyle{abstractstyle}{%
+  \fancyhf{} % 清空默认设置
+  % 页眉左侧
+  \fancyhead[L]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} 浙江大学博士学位论文}
+  % 页眉右侧固定写“摘要”
+  \fancyhead[R]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} 摘要}
+  % 不显示任何页码
+  \renewcommand{\headrulewidth}{0.5pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\fancypagestyle{abstractstyle-eng}{%
+  \fancyhf{} % 清空默认设置
+  % 页眉左侧
+  \fancyhead[L]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} 浙江大学博士学位论文}
+  % 页眉右侧固定写“摘要”
+  \fancyhead[R]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} abstract}
+  % 不显示任何页码
+  \renewcommand{\headrulewidth}{0.5pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\fancypagestyle{supplementary}{%
+  \fancyhf{} % 清空默认设置
+  % 页眉左侧
+  \fancyhead[L]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} 浙江大学博士学位论文}
+  % 页眉右侧固定写“附录”
+  \fancyhead[R]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} 附录}
+}
+
+
+
+% 自定义章节格式，使章节第一页也显示页眉
+\makeatletter
+\renewcommand{\chapter}{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \thispagestyle{main}% 设置章节第一页的页眉样式
+    \global\@topnum\z@
+    \@afterindentfalse
+    \secdef\@chapter\@schapter
+}
+\makeatother
+
+
+% \fancypagestyle{toc}{
+%     \fancyhf{} % 清空默认设置
+%     \fancyhead[L]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} 浙江大学博士学位论文} % 页眉左侧
+%     \fancyhead[R]{\fontsize{9pt}{9pt}\selectfont \CJKfamily{fs} 目录} % 页眉右侧显示“目录”
+%     \fancyfoot[C]{\thepage} % 页脚中间显示页码
+%     \renewcommand{\headrulewidth}{0.5pt} % 页眉下划线
+%     \renewcommand{\footrulewidth}{0pt}   % 禁止页脚线
+% }
+
+% \fancypagestyle{plain}{ % 目录后续页或其他浮动页默认用 plain
+%     \fancyhf{} % 清空默认设置
+%     \fancyfoot[C]{\thepage} % 只显示页码
+%     \renewcommand{\headrulewidth}{0pt} % 无页眉线
+%     \renewcommand{\footrulewidth}{0pt} % 无页脚线
+% }
+
+\makeatletter
+\renewcommand{\tableofcontents}{%
+    \clearpage
+    \pagestyle{toc}% 整个目录都用toc
+    \@starttoc{toc}% 输出目录
+}
+\makeatother
+
+
+
+% 设置字体
+\setCJKfamilyfont{songti}[Path=Fonts/, AutoFakeBold=3]{SimSun.ttc} % 宋体伪加粗
+\setCJKfamilyfont{heiti}[Path=Fonts/, AutoFakeBold=3]{SimHei.ttf} % 黑体伪加粗
+\setCJKfamilyfont{kaiti}[Path=Fonts/, AutoFakeBold=3]{Kaiti.ttf} % 楷体伪加粗
+\setCJKmainfont[Path=Fonts/, AutoFakeBold=3]{FangSong.ttf}  % 默认中文字体为仿宋
+\setmainfont[Path=Fonts/, AutoFakeBold=3]{TimesNewRoman.ttf}   % 英文为 Times New Roman
+\setmainfont[Path=Fonts/, ItalicFont=TimesNewRomanItalic.ttf]{TimesNewRoman.ttf}   % 英文为 Times New Roman，支持斜体
+
+% 定义字体命令
+\newcommand{\songti}{\CJKfamily{songti}}
+\newcommand{\heiti}{\CJKfamily{heiti}}
+\newcommand{\kaiti}{\CJKfamily{kaiti}}
+
+% 设置全局行间距为 1.5
+\renewcommand{\baselinestretch}{1.5}
+
+% % 一级标题：宋体四号，带编号
+% \titleformat{\section}[block]{\fontsize{14pt}{14pt}\selectfont\songti\bfseries}{\thesection}{1em}{}
+
+% % 二级标题：黑体五号，带编号
+% \titleformat{\subsection}[block]{\fontsize{12pt}{12pt}\selectfont\heiti\bfseries}{\thesubsection}{1em}{}
+
+% % 三级标题：黑体五号，带编号
+% \titleformat{\subsubsection}[block]{\fontsize{12pt}{12pt}\selectfont\heiti\bfseries}{\thesubsubsection}{1em}{}
+
+
+% 调整标题层次
+\renewcommand{\thesection}{\thechapter.\arabic{section}} % 使 \section 成为章节内部标题
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}} % 调整 \subsection 的编号格式
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}} % subsubsection 显示为 1.1.1.1
+\setcounter{secnumdepth}{3} % 设置编号深度到 subsubsection
+
+% 自定义章节样式
+\titleformat{\chapter}[block]{\fontsize{14pt}{14pt}\selectfont\songti\bfseries}{\thechapter}{1em}{}[] % 调整 \section 样式
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt} % 调整段前段后间距
+\titleformat{\section}[block]{\fontsize{12pt}{12pt}\selectfont\heiti\bfseries}{\thesection}{1em}{} % 调整 \subsection 样式
+\titleformat{\subsection}[block]{\fontsize{12pt}{12pt}\selectfont\songti\bfseries}{\thesubsection}{1em}{} % 调整 \subsection 样式
+\titleformat{\subsubsection}[block]{\fontsize{12pt}{12pt}\selectfont\songti\bfseries}{\thesubsubsection}{1em}{} % 自定义 \subsubsection 样式
+
+
+
+% 定义表格的标题和编号规则
+\renewcommand{\tablename}{表} % 修改表标题前缀
+\renewcommand{\thetable}{\thechapter-\arabic{table}} % 设置编号为 章节号-表格编号
+\counterwithin{table}{chapter} % 表格计数与章节挂钩
+
+% 定义图的标题
+\renewcommand{\figurename}{图} % 修改图标题前缀
+\renewcommand{\thefigure}{\thechapter—\arabic{figure}} % 设置编号为 章节号-图片编号
+\counterwithin{figure}{chapter} % 图表计数与章节挂钩
+
+
+% 自定义宋体六号字体（表格）
+\newcommand{\tablesongti}{\CJKfamily{songti}\fontsize{9pt}{9pt}\selectfont}
+\newcommand{\fs}{\CJKfamily{fs}} % 快速使用仿宋字体
+\newcommand{\boldzh}[1]{{\CJKfamily{fs}\bfseries#1}} % 定义中文加粗命令
+
+% % 自定义目录字体
+% \renewcommand{\cftsecfont}{\fontsize{14pt}{14pt}\selectfont\songti} % 一级目录：宋体四号
+% \renewcommand{\cftsubsecfont}{\fontsize{12pt}{12pt}\selectfont\heiti} % 二级目录：黑体五号
+% \renewcommand{\cftsubsubsecfont}{\fontsize{12pt}{12pt}\selectfont\songti} % 三级目录：宋体五号
+
+% 自定义目录字体
+\renewcommand{\cftchapfont}{\fontsize{14pt}{14pt}\selectfont\songti} % 一级目录：宋体四号
+\renewcommand{\cftsecfont}{\fontsize{12pt}{12pt}\selectfont\heiti} % 二级目录：黑体五号
+\renewcommand{\cftsubsecfont}{\fontsize{12pt}{12pt}\selectfont\songti} % 二级目录：黑体五号
+
+% 添加一级目录后面点的样式
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % 一级标题点线
+
+
+\hypersetup{
+    colorlinks=true,      % 启用超链接颜色
+    linkcolor=black,      % 设置链接文字颜色为黑色
+    citecolor=black,      % 设置引用颜色为黑色
+    filecolor=black,      % 设置文件链接颜色为黑色
+    urlcolor=black        % 设置URL颜色为黑色
+}
+
+
+\DeclareCaptionFont{heiti}{\CJKfamily{heiti}}
+\DeclareCaptionFont{songti}{\CJKfamily{songti}}
+\DeclareCaptionFont{heitiCaption}{\CJKfamily{heiti}\fontsize{9pt}{9pt}\selectfont} % 定义黑体 9pt
+\DeclareCaptionFont{songtiCaption}{\CJKfamily{songti}\fontsize{10.5pt}{10.5pt}\selectfont} % 定义黑体 9pt
+
+
+
+% 文档开始
+\begin{document}
+
+
+% 表格注释：六号宋体
+\captionsetup[table]{justification=centering, font={footnotesize, songti}}
+
+% 图片标题：小五宋体
+\captionsetup[figure]{
+    font={songtiCaption},
+    labelfont={songtiCaption},
+    labelsep=quad
+}
+
+\captionsetup[table]{
+    font={heitiCaption}, % 使用自定义字体命令
+    labelfont={heitiCaption}, % 标签也使用自定义字体命令
+    labelsep=quad % 标签与标题内容的间隔
+}
+
+
+\renewcommand{\thefigure}{\thechapter-\arabic{figure}} % 放在这里覆盖编号规则
+\renewcommand{\thetable}{\thechapter-\arabic{table}} % 设置编号为 章节号-表格编号
+
+% 设置段落首行缩进
+\setlength{\parindent}{2em}  % 缩进 2 个字符宽度
+\setlength{\parskip}{0em}    % 段落之间不留额外间距（可调整）
+
+% 封面页无页眉页脚
+\pagestyle{empty}
+\thispagestyle{empty} % 清除当前页面的页眉页脚和页码
+\input{cover.tex}  % 加载封面
+
+\makeatletter
+\newcommand{\hidepagenumbering}{%
+    \renewcommand{\thepage}{}%
+    \addtocounter{page}{-1}%
+}
+\makeatother
+
+\input{abstract-ch}  % 加载摘要
+\input{abstract-eng}  % 加载摘要
+
+
+% 目录页有页眉，但无页码
+% \thispagestyle{empty} % 清除页眉页脚
+% \hidepagenumbering
+% \renewcommand{\contentsname}{\begin{center}\textbf{\heiti\fontsize{22pt}{22pt}\selectfont 目\ \ \ 录}\end{center}} % 设置目录标题格式
+% \vspace*{-5cm} % 减少顶部空白
+% \tableofcontents
+
+% \makeatletter
+% \renewcommand{\tableofcontents}{%
+%     \clearpage
+%     \thispagestyle{empty}  % 目录第一页无页眉页脚
+%     \hidepagenumbering
+%     \renewcommand{\contentsname}{\begin{center}\textbf{\heiti\fontsize{22pt}{22pt}\selectfont 目\ \ \ 录}\end{center}} % 目录第一页标题
+%     \vspace*{-5cm} % 减少顶部空白
+%     \@starttoc{toc} % 生成目录
+%     \afterpage{\thispagestyle{empty}} % 目录第二页及后续页也清除页眉页脚
+% }
+% \makeatother
+
+% \clearpage
+% \thispagestyle{empty}  % 目录第一页无页眉页脚
+% \hidepagenumbering  % 隐藏页码
+
+% \renewcommand{\contentsname}{\begin{center}
+%     \textbf{\heiti\fontsize{22pt}{22pt}\selectfont 目\ \ \ 录}
+% \end{center}} % 目录第一页标题
+% \vspace*{-5cm} % 减少顶部空白
+
+% \tableofcontents % 生成目录
+
+% % 让第二页及后续目录页仍然保持无页眉页脚
+% \afterpage{\renewcommand{\contentsname}{} \thispagestyle{empty}}
+% \clearpage
+
+% 目录自定义：第一页标题“目 录”，且无页眉页脚；后续同样无页眉页脚
+\makeatletter
+% \newcommand{\mycontents}{%
+%     \clearpage
+%     % 目录第一页：无页眉页脚 & 隐藏页码 (可选)
+%     \thispagestyle{empty}
+%     \renewcommand{\thepage}{}  % 隐藏页码
+%     % 居中标题“目 录”
+%     {\centering \textbf{\heiti\fontsize{22pt}{22pt}\selectfont 目\ \ \ 录}\par}
+%     % \vspace*{-2cm}
+%     \@starttoc{toc}
+%     % 第二页及后续：依旧空白 (empty)，避免重复标题
+%     \afterpage{\thispagestyle{empty}\renewcommand{\thepage}{\arabic{page}}}
+% }
+\newcommand{\mycontents}{%
+    \clearpage
+    \thispagestyle{empty}    % 目录第一页无页眉页脚
+    \renewcommand{\thepage}{} % 不显示页码
+    {\centering \heiti\fontsize{20pt}{20pt}\selectfont 目\ \ \ 录\par}
+    \@starttoc{toc} % 输出目录
+    % 不使用 \afterpage
+}
+\makeatother
+
+\clearpage
+
+% 生成目录
+\mycontents
+
+% 重新开始计页码
+\clearpage
+
+
+\newpage
+\pagenumbering{arabic}
+
+% 正文从第一页开始，启用自定义页眉页脚
+\setcounter{page}{1} % 页码从正文重新开始计数
+\pagestyle{main} % 启用自定义页眉
+\raggedbottom
+
+% 引入章节
+
+\input{Introduction}
+
+\input{Study1}
+\input{Study2}
+\input{Study3}
+\input{Study4}
+
+\input{GeneralDiscussion}
+\input{Conclusion}
+
+
+
+
+% 参考文献部分
+\renewcommand{\bibname}{参考文献} % 修改默认标题
+\addcontentsline{toc}{chapter}{参考文献} % 添加到目录
+\bibliography{ref} % 加载参考文献
+
+\renewcommand{\bibname}{附录} % 修改默认标题
+\input{Supplementary}
+\addcontentsline{toc}{chapter}{附录} % 添加到目录
+
+\end{document}
